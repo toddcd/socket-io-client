@@ -7,12 +7,10 @@ import Typography from "@material-ui/core/Typography";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Chip from '@material-ui/core/Chip';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Avatar from "@material-ui/core/Avatar";
-import {deepOrange} from '@material-ui/core/colors';
 import Box from "@material-ui/core/Box";
 
 
@@ -58,16 +56,20 @@ const useStyles = makeStyles(theme => ({
     },
     button: {width: '15%'},
     topicButton: {
-        backgroundColor: '#898C1F',
-        '&:hover': {
-            backgroundColor: '#BF9D73',
-        }
+        color: 'grey'
+        //backgroundColor: '#898C1F',
+        // '&:hover': {
+        //     backgroundColor: '#BF9D73',
+        // }
     },
     avatar: {
         //color: theme.palette.getContrastText(deepOrange[500]),
         //backgroundColor: deepOrange[500],
         backgroundColor: '#024873'
     },
+    message: {
+        textAlign: 'left',
+    }
 }));
 
 
@@ -108,9 +110,10 @@ const Chat = () => {
                             allChats[activeTopic].map((chat, idx) => (
                                 <div key={idx} className={classes.flex}>
                                     <Box mr={2} mb={1}>
-                                        <Avatar key={idx} className={classes.avatar}>{chat.from.charAt(0).toUpperCase()}</Avatar>
+                                        <Avatar key={idx} className={classes.avatar}>{chat.user}</Avatar>
                                     </Box>
-                                    <Box mb={1}>
+                                    <Box className={classes.message} mb={1.5}>
+                                        <Typography variant='caption'>{chat.time}</Typography>
                                         <Typography variant='body1'>{chat.msg}</Typography>
                                     </Box>
                                 </div>

@@ -17,14 +17,20 @@ const initialState = {
 }
 
 function reducer(state, action) {
-    const {from, msg, topic} = action.payload;
+    const {from, msg, topic, time} = action.payload;
+    let user = 'SYS';
+
+    if(from.includes(".")){
+        user = from.slice(-2)
+    }
+
     switch (action.type) {
         case 'RECEIVE_MESSAGE':
             return {
                 ...state,
                 [topic]: [
                     ...state[topic],
-                    {from, msg,}
+                    {user, msg, time}
                 ]
             }
         default:
@@ -43,18 +49,21 @@ export default function Store(props) {
     const [allChats, dispatch] = useReducer(reducer, initialState);
 
     if (!socket) {
-        socket = io('http://localhost:8001');
+        socket = io('http://localhost:8000');
 
         // client listener for messages
         socket.on('chat message', function(msg){
             dispatch({type: 'RECEIVE_MESSAGE', payload: msg})
         })
+
+        socket.on('alerts', function(msg){
+            dispatch({type: 'RECEIVE_MESSAGE', payload: msg})
+        })
     }
 
     const user = 'todd' + Math.random(100).toFixed(2);
-
     return (
-        <CTX.Provider value={{allChats, sendChatAction,user}}>
+        <CTX.Provider value={{allChats, sendChatAction, user}}>
             {props.children}
         </CTX.Provider>
     )
